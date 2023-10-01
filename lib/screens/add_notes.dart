@@ -17,7 +17,7 @@ class AddNotes extends StatelessWidget {
             child: Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              color: Colors.black,
+              color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.only(
                     left: 20, right: 20, bottom: 20, top: 20),
@@ -64,29 +64,30 @@ class AddNotes extends StatelessWidget {
                                       noteProvider.descriptionController.text,
                                 );
 
-                                if (notes.title != null &&
-                                    notes.description != null) {
-                                  try {
-                                    if (noteProvider.id == null) {
-                                      await DatabaseServices().addNotes(notes);
-                                    } else {
-                                      await DatabaseServices()
-                                          .updateNotes(notes, noteProvider.id!);
-                                    }
-                                    noteProvider.addNote(notes);                                    
-                                    Navigator.pop(context);
-                                  } catch (error) {
-                                    print("Error is $error");
+                                try {
+                                  if (noteProvider.curretNote.title == '') {
+                                    await noteProvider
+                                        .addNote(noteProvider.curretNote);
+                                  } else {
+                                    await noteProvider.updateNote(
+                                        notes, noteProvider.curretNote.id!);
                                   }
-                                } else {
-                                  print("Title or description is null");
+                                  noteProvider.addNote(notes);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => NoteScreen()));
+                                } catch (error) {
+                                  print("Error is $error");
                                 }
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.transparent,
                               ),
                               child: Text(
-                                noteProvider.note == null ? "Done" : "Update",
+                                noteProvider.curretNote.title == null
+                                    ? "Done"
+                                    : "Update",
                                 style: TextStyle(
                                   color: Colors.amberAccent,
                                   fontSize: 16,
@@ -109,6 +110,7 @@ class AddNotes extends StatelessWidget {
                     TextFormField(
                       controller: noteProvider.descriptionController,
                       decoration: InputDecoration(
+                          fillColor: Colors.white,
                           enabledBorder:
                               OutlineInputBorder(borderSide: BorderSide.none),
                           labelStyle: TextStyle(color: Colors.white),

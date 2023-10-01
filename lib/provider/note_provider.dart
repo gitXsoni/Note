@@ -9,10 +9,24 @@ class NoteProvider extends ChangeNotifier {
   TextEditingController searchController = TextEditingController();
   TextEditingController titleNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  String? id;
-  Notes? note;
+  
+
 
   List<Notes> notes = [];
+
+  Notes _currentNote = Notes();
+  Notes get curretNote => _currentNote;
+
+  bool _isEditing = false;
+  bool get isEditing => _isEditing;
+
+  setCurrentNote(Notes note) {
+    titleNameController.text = note.title ?? '';
+    descriptionController.text = note.description ?? '';
+
+    _currentNote = note;
+    notifyListeners();
+  }
 
   addNote(Notes note) {
     notes.add(note);
@@ -21,6 +35,18 @@ class NoteProvider extends ChangeNotifier {
 
   fetchNotes() async {
     notes = await DatabaseServices().fetchNotes();
+    notifyListeners();
+  }
+
+  updateNote(Notes note, String id) async {
+    await DatabaseServices().updateNotes(note, id);
+    fetchNotes();
+    notifyListeners();
+  }
+
+  deleteNotes(String id) async {
+    await DatabaseServices().deleteNotes(id);
+    fetchNotes();
     notifyListeners();
   }
 

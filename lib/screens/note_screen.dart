@@ -4,6 +4,8 @@ import 'package:login_ui/screens/add_notes.dart';
 import 'package:login_ui/widgets/note_card.dart';
 import 'package:provider/provider.dart';
 
+import '../models/data_models.dart';
+
 class NoteScreen extends StatelessWidget {
   const NoteScreen({super.key});
 
@@ -12,6 +14,8 @@ class NoteScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          Provider.of<NoteProvider>(context, listen: false)
+              .setCurrentNote(Notes());
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => AddNotes()));
         },
@@ -93,8 +97,7 @@ class NoteScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final note = noteProvider.notes[index];
                         return NoteCard(
-                          title: note.title!,
-                          description: note.description!,
+                          note: note,
                         );
                       },
                     ),

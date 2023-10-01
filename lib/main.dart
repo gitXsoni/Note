@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:login_ui/provider/form_provider.dart';
-import 'package:login_ui/provider/note_details_provider.dart';
 import 'package:login_ui/provider/note_provider.dart';
 import 'package:login_ui/screens/note_screen.dart';
 import 'package:login_ui/screens/signup_screen.dart';
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => NoteProvider()),
-        ChangeNotifierProvider(create: (_) => NoteDetailsProvider()),
+        // ChangeNotifierProvider(create: (_) => NoteDetailsProvider()),
         ChangeNotifierProvider(create: (_) => FormProvider())
       ],
       child: MaterialApp(

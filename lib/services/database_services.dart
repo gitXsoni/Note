@@ -12,6 +12,7 @@ class DatabaseServices {
   }
 
   Future<void> updateNotes(Notes notes, String id) async {
+    print("Currently updating note is ${notes.title}");
     await notesCollection
         .doc(id)
         .update(notes.toJson())
@@ -35,7 +36,7 @@ class DatabaseServices {
     await notesCollection.get().then((value) {
       value.docs.forEach((doc) {
         Notes note = Notes(
-          // id: doc.id,
+          id: doc.id,
           title: doc.get('title') ?? "null",
           description: doc.get('description') ?? "null",
         );

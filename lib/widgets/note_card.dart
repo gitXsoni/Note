@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:login_ui/provider/note_details_provider.dart';
+import 'package:login_ui/models/data_models.dart';
+import 'package:login_ui/provider/note_provider.dart';
 import 'package:provider/provider.dart';
-
 import '../screens/note_details.dart';
 
 class NoteCard extends StatelessWidget {
-  final String title;
-  final String description;
-  const NoteCard({super.key, required this.description, required this.title});
+  final Notes note;
+  const NoteCard({super.key, required this.note});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        final noteDetailsProvider =
-            Provider.of<NoteDetailsProvider>(context, listen: false);
-        noteDetailsProvider.title = title;
-        noteDetailsProvider.description = description;
+        Provider.of<NoteProvider>(context, listen: false).setCurrentNote(note);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => NoteDetails()));
       },
@@ -32,12 +28,14 @@ class NoteCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title,
+              Text(note.title!,
+                  maxLines: 1,
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
                       fontSize: 16)),
-              Text(description,
+              Text(note.description!,
+                  maxLines: 1,
                   style: TextStyle(
                       color: Colors.grey,
                       fontWeight: FontWeight.w500,

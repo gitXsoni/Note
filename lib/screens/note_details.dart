@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:login_ui/provider/note_provider.dart';
 import 'package:login_ui/screens/add_notes.dart';
-import 'package:login_ui/screens/note_screen.dart';
 import 'package:login_ui/services/database_services.dart';
 import 'package:provider/provider.dart';
-
-import '../provider/note_details_provider.dart';
 
 class NoteDetails extends StatelessWidget {
   const NoteDetails({super.key});
@@ -37,8 +35,7 @@ class NoteDetails extends StatelessWidget {
           )
         ],
       ),
-      body:
-          Consumer<NoteDetailsProvider>(builder: (_, noteDetailsProvider, __) {
+      body: Consumer<NoteProvider>(builder: (_, noteProvider, __) {
         return SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height,
@@ -63,7 +60,7 @@ class NoteDetails extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                    noteDetailsProvider.title ??
+                                    noteProvider.curretNote.title ??
                                         "Title not available",
                                     style: TextStyle(
                                         color: Colors.white,
@@ -76,11 +73,7 @@ class NoteDetails extends StatelessWidget {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (_) =>
-                                                    AddNotes( 
-                                                                                                            
-                                                      
-                                                    )));
+                                                builder: (_) => AddNotes()));
                                       },
                                       icon: Icon(Icons.edit),
                                       color: Colors.amberAccent,
@@ -90,10 +83,9 @@ class NoteDetails extends StatelessWidget {
                                     ),
                                     IconButton(
                                       onPressed: () async {
-                                        if (noteDetailsProvider.id != null) {
-                                          await DatabaseServices().deleteNotes(
-                                              noteDetailsProvider.id!);
-                                        }
+                                        noteProvider.deleteNotes(
+                                            noteProvider.curretNote.id!);
+                                        Navigator.pop(context);
                                         // Navigator.push(
                                         //     context,
                                         //     MaterialPageRoute(
@@ -107,7 +99,7 @@ class NoteDetails extends StatelessWidget {
                               ],
                             ),
                             Text(
-                                noteDetailsProvider.description ??
+                                noteProvider.curretNote.description ??
                                     "Description not available",
                                 style: TextStyle(
                                     color: Colors.white,

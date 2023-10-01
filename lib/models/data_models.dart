@@ -3,7 +3,7 @@ class Notes {
   String? title;
   String? description;
 
-  Notes({this.title, this.description});
+  Notes({this.id, this.title, this.description});
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> data = {};
